@@ -15,6 +15,7 @@ class LruCache
     end
 
     def set(key, value)
+        key = key.to_sym
         new_node = Node.new(value)
         if (@cache.size == 0)
             @cache[key] = new_node
@@ -42,6 +43,13 @@ class LruCache
 
             @cache[key] = new_node
         else
+            if @cache.size == MAX
+                lru_next_key = @cache[@lru].next
+                @cache.delete(@lru)
+                @cache[lru_next_key].prev = nil
+                @lru = lru_next_key
+            end
+
             @cache[key] = new_node
             new_node.prev = @mru
             @cache[@mru].next = key
@@ -76,3 +84,6 @@ cache.set('third', 'red')
 cache.set('second', 'blue')
 cache.set('first', 'blue')
 cache.set('first', 'green')
+cache.set('fourth', 'green')
+cache.set('fifth', 'green')
+cache.set('sixth', 'green')
