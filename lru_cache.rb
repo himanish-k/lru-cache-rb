@@ -9,9 +9,9 @@ class LruCache
     end
 
     def get(key)
-        puts 'cache is empty' if @cache.size == 0
-
-        puts @cache[key]
+        node = @cache[key.to_sym]
+        
+        node.nil? ? nil : node.value 
     end
 
     def set(key, value)
@@ -55,13 +55,9 @@ class LruCache
             @cache[@mru].next = key
             @mru = key
         end
-
-        print_cache_state
     end
 
-    private
-
-    def print_cache_state
+    def print
         puts "cache state: #{@cache}"
         puts "lru: #{@lru}"
         puts "mru: #{@mru}"
@@ -77,13 +73,23 @@ class LruCache
 end
 
 cache = LruCache.new
-cache.get 'first'
 cache.set('first', 'red')
+cache.print
 cache.set('second', 'red')
+cache.print
 cache.set('third', 'red')
+cache.print
 cache.set('second', 'blue')
+cache.print
 cache.set('first', 'blue')
+cache.print
 cache.set('first', 'green')
+cache.print
 cache.set('fourth', 'green')
+cache.print
 cache.set('fifth', 'green')
+cache.print
 cache.set('sixth', 'green')
+cache.print
+puts "sixth: #{cache.get('sixth')}"
+puts "seventh: #{cache.get('seventh')}"
